@@ -1,0 +1,7 @@
+{
+  "name": "2d-pos-prueba", "version": "0.2.0", "private": true,
+  "description": "Prueba online de POS 2D con cuentas y datos compartidos",
+  "engines": {"node": ">=24 <25"},
+  "scripts": {"start": "node server.cjs", "test": "node --test test.cjs"},
+  "dependencies": {"pg": "8.16.3"}
+}
