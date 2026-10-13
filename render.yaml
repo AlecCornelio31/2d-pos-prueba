@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: dosd-pos-prueba
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 24.19.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: dosd-pos-db-prueba
+          property: connectionString
+      - key: SETUP_TOKEN
+        generateValue: true
+
+databases:
+  - name: dosd-pos-db-prueba
+    plan: free
+    region: oregon
+    ipAllowList: []

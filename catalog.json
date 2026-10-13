@@ -1,0 +1,530 @@
+[
+  {
+    "id": "p1",
+    "category": "Alitas",
+    "name": "Orden de 8 alitas",
+    "price": 12500,
+    "detail": "8 piezas",
+    "active": true
+  },
+  {
+    "id": "p2",
+    "category": "Alitas",
+    "name": "Orden de 10 alitas",
+    "price": 15500,
+    "detail": "10 piezas",
+    "active": true
+  },
+  {
+    "id": "p3",
+    "category": "Alitas",
+    "name": "Orden de 16 alitas",
+    "price": 24000,
+    "detail": "16 piezas",
+    "active": true
+  },
+  {
+    "id": "p4",
+    "category": "Bebidas",
+    "name": "Coca-Cola",
+    "price": 3000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p5",
+    "category": "Bebidas",
+    "name": "Quita Sed",
+    "price": 3000,
+    "detail": "700 ml",
+    "active": true
+  },
+  {
+    "id": "p6",
+    "category": "Bebidas",
+    "name": "Naturales",
+    "price": 3000,
+    "detail": "1 litro; sabores no especificados",
+    "active": true
+  },
+  {
+    "id": "p7",
+    "category": "Bebidas",
+    "name": "Agua",
+    "price": 2000,
+    "detail": "1 litro",
+    "active": true
+  },
+  {
+    "id": "p8",
+    "category": "Bebidas",
+    "name": "Malteada de fresa",
+    "price": 8500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p9",
+    "category": "Bebidas",
+    "name": "Malteada de vainilla",
+    "price": 8500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p10",
+    "category": "Bebidas",
+    "name": "Malteada de chocolate",
+    "price": 8500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p11",
+    "category": "Bebidas",
+    "name": "Limonada azul",
+    "price": 5500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p12",
+    "category": "Boneless",
+    "name": "Orden de 8 boneless",
+    "price": 12000,
+    "detail": "8 piezas",
+    "active": true
+  },
+  {
+    "id": "p13",
+    "category": "Boneless",
+    "name": "Orden de 10 boneless",
+    "price": 15000,
+    "detail": "10 piezas",
+    "active": true
+  },
+  {
+    "id": "p14",
+    "category": "Boneless",
+    "name": "Orden de 16 boneless",
+    "price": 23500,
+    "detail": "16 piezas",
+    "active": true
+  },
+  {
+    "id": "p15",
+    "category": "Combos",
+    "name": "Match Burgers",
+    "price": 20000,
+    "detail": "2 hamburguesas clásicas, 6 dedos de queso y una porción de papas gajo",
+    "active": true
+  },
+  {
+    "id": "p16",
+    "category": "Combos",
+    "name": "Los 3D",
+    "price": 12000,
+    "detail": "3 jochitos rellenos de queso mozzarella y bañados con cheddar",
+    "active": true
+  },
+  {
+    "id": "p17",
+    "category": "Especialidades de la casa",
+    "name": "Papas embarazadas",
+    "price": 12500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p18",
+    "category": "Especialidades de la casa",
+    "name": "Papas callejeras",
+    "price": 11500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p19",
+    "category": "Especialidades de la casa",
+    "name": "Papas mexas",
+    "price": 13000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p20",
+    "category": "Extras",
+    "name": "Dedos de queso",
+    "price": 3500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p21",
+    "category": "Extras",
+    "name": "Boneless",
+    "price": 3500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p22",
+    "category": "Extras",
+    "name": "Tocino",
+    "price": 2500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p23",
+    "category": "Extras",
+    "name": "Salchipulpos",
+    "price": 3000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p24",
+    "category": "Extras",
+    "name": "Queso cheddar",
+    "price": 2000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p25",
+    "category": "Extras",
+    "name": "Salsa extra",
+    "price": 1500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p26",
+    "category": "Extras",
+    "name": "Papas francesas extra",
+    "price": 2500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p27",
+    "category": "Extras",
+    "name": "Papas Gajos extra",
+    "price": 3500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p28",
+    "category": "Extras",
+    "name": "Papas Crunchy extra",
+    "price": 3500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p29",
+    "category": "Hamburguesas",
+    "name": "Hamburguesa clásica",
+    "price": 8500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p30",
+    "category": "Hamburguesas",
+    "name": "Hamburguesa hawaiana",
+    "price": 12500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p31",
+    "category": "Hamburguesas",
+    "name": "Hamburguesa asadera",
+    "price": 14000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p32",
+    "category": "Hamburguesas",
+    "name": "Hamburguesa La Patroncita",
+    "price": 14000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p33",
+    "category": "Hamburguesas",
+    "name": "Hamburguesa con boneless",
+    "price": 14000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p34",
+    "category": "Hamburguesas",
+    "name": "Cheeseburger",
+    "price": 14000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p35",
+    "category": "Hamburguesas",
+    "name": "Hamburguesa parrillera",
+    "price": 14500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p36",
+    "category": "Hamburguesas",
+    "name": "Hamburguesa La 2D",
+    "price": 15000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p37",
+    "category": "Jochotes",
+    "name": "Jochote clásico",
+    "price": 6500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p38",
+    "category": "Jochotes",
+    "name": "Jochote hawaiano",
+    "price": 9500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p39",
+    "category": "Jochotes",
+    "name": "Jochote asadero",
+    "price": 10000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p40",
+    "category": "Jochotes",
+    "name": "Jochote al pastor",
+    "price": 10000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p41",
+    "category": "Jochotes",
+    "name": "Jochote con boneless",
+    "price": 10000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p42",
+    "category": "Papas",
+    "name": "Papas francesas clásicas",
+    "price": 9000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p43",
+    "category": "Papas",
+    "name": "Papas francesas con boneless",
+    "price": 12500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p44",
+    "category": "Papas",
+    "name": "Papas francesas con dedos de queso",
+    "price": 12500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p45",
+    "category": "Papas",
+    "name": "Papas francesas con salchipulpos",
+    "price": 12000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p46",
+    "category": "Papas",
+    "name": "Papas gajo clásicas",
+    "price": 10000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p47",
+    "category": "Papas",
+    "name": "Papas gajo con boneless",
+    "price": 13500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p48",
+    "category": "Papas",
+    "name": "Papas gajo con dedos de queso",
+    "price": 13500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p49",
+    "category": "Papas",
+    "name": "Papas gajo con salchipulpos",
+    "price": 13000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p50",
+    "category": "Papas",
+    "name": "Papas Cronchi clásicas",
+    "price": 10000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p51",
+    "category": "Papas",
+    "name": "Papas Cronchi con boneless",
+    "price": 13500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p52",
+    "category": "Papas",
+    "name": "Papas Cronchi con dedos de queso",
+    "price": 13500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p53",
+    "category": "Papas",
+    "name": "Papas Cronchi con salchipulpos",
+    "price": 13000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p54",
+    "category": "Para botanear",
+    "name": "Orden de dedos de queso",
+    "price": 9000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p55",
+    "category": "Tortas",
+    "name": "Torta Clásica",
+    "price": 13000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p56",
+    "category": "Tortas",
+    "name": "Torta Hawaiana",
+    "price": 14000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p57",
+    "category": "Tortas",
+    "name": "Torta Asadera",
+    "price": 15000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p58",
+    "category": "Tortas",
+    "name": "Torta Parrillera",
+    "price": 17000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p59",
+    "category": "Tortas",
+    "name": "Torta Milanesa",
+    "price": 16000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p60",
+    "category": "Tortas",
+    "name": "Torta La Suprema 2D",
+    "price": 20000,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p61",
+    "category": "Bebidas",
+    "name": "Mora explosiva",
+    "price": 5500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p62",
+    "category": "Bebidas",
+    "name": "Manzana explosiva",
+    "price": 5500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p63",
+    "category": "Bebidas",
+    "name": "Frutos rojos",
+    "price": 5500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p64",
+    "category": "Bebidas",
+    "name": "Bubbly mango",
+    "price": 5500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p65",
+    "category": "Bebidas",
+    "name": "Limonada rosa",
+    "price": 5500,
+    "detail": "",
+    "active": true
+  },
+  {
+    "id": "p66",
+    "category": "Bebidas",
+    "name": "Chocomilk",
+    "price": 4500,
+    "detail": "",
+    "active": true
+  }
+]
