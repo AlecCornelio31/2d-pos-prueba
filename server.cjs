@@ -1,3 +1,5 @@
+const Point=require('./point.cjs');
+const Printing=require('./printing.cjs');
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {openStore}=require('./store.cjs');const D=require('./domain.cjs');
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
@@ -42,7 +44,16 @@ async function createApp(){
       user=d.users.find(u=>u.username===username&&u.active);const valid=await D.checkPassword(body.password,user?.passwordHash||'00'.repeat(16)+':'+'00'.repeat(64));if(!user||!valid)D.fail('Usuario o contraseña incorrectos, o cuenta deshabilitada.',401);delete d.limits['login:'+username];token=signIn(user);value={ok:true};
      }else{
       if(!user)D.fail('Inicia sesión. Tu cuenta puede haber sido deshabilitada.',401);
+      if(url.pathname.startsWith('/api/point/')){
+       if(user.role!=='admin')D.fail('Solo el administrador configura la impresión Point.',403);
+       const routes={'GET /api/point/terminals':'terminals','POST /api/point/test':'printTest','POST /api/point/check':'check'};
+       const method=routes[req.method+' '+url.pathname];if(!method)D.fail('Ruta no encontrada.',404);
+       D.limit(d,'point:'+user.id,30);Object.assign(original,d);
+       return {point:{method,userId:user.id,sessionHash:session.tokenHash}};
+      }
       if(req.method==='POST'&&url.pathname==='/api/logout'){d.sessions=d.sessions.filter(s=>s!==session);clear=true;value={ok:true};}
+      else if(req.method==='POST'&&url.pathname==='/api/print/claim')value=Printing.claim(d,user);
+      else if(req.method==='POST'&&url.pathname==='/api/print/ack')value=Printing.ack(d,user,body);
       else if(req.method==='GET'&&url.pathname==='/api/export'){if(user.role!=='admin')D.fail('Solo el administrador puede exportar.',403);value={exportedAt:D.now(),schema:d.schema,products:d.products,promos:d.promos,tables:d.tables,orders:d.orders,cash:d.cash,movements:d.movements,audit:d.audit,users:d.users.map(D.safeUser)};}
       else if(req.method==='POST'&&url.pathname==='/api/action'){
        if(!/^[0-9a-f-]{36}$/i.test(body.requestId||''))D.fail('Falta identificador de operación.');const hash=sha(JSON.stringify(body));const prior=d.receipts.find(r=>r.userId===user.id&&r.id===body.requestId);if(prior){if(prior.hash!==hash)D.fail('Identificador de operación reutilizado.',409);value=prior.result;}else{value=await D.act(d,user,body);d.receipts.push({id:body.requestId,userId:user.id,hash,result:value,at:Date.now()});d.receipts=d.receipts.filter(r=>r.at>Date.now()-86400000);}
@@ -52,6 +63,14 @@ async function createApp(){
      Object.assign(original,d);return {value,token,clear};
     }catch(e){original.limits=d.limits;return {error:e.message,status:e.status||500};}
    });
+   if(outcome.point){
+    const {method,userId,sessionHash}=outcome.point;
+    const point=Point.createPoint(store,d=>{
+     const current=d.users.find(u=>u.id===userId&&u.active&&u.role==='admin');
+     if(!current||!d.sessions.some(s=>s.tokenHash===sessionHash&&s.userId===userId&&s.expires>Date.now()))D.fail('Tu sesión ya no está autorizada.',401);
+    });
+    return json(await point[method](body));
+   }
    if(outcome.error)return json({error:outcome.status===500?'Error del servidor. Reintenta.':outcome.error},outcome.status);
    if(outcome.token)cookie(outcome.token);if(outcome.clear)cookie('',0);return json(outcome.value);
   }catch(e){json({error:e.status?e.message:'No fue posible completar la solicitud.'},e.status||500);}
