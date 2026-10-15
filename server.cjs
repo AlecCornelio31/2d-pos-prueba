@@ -46,7 +46,7 @@ async function createApp(){
       if(!user)D.fail('Inicia sesión. Tu cuenta puede haber sido deshabilitada.',401);
       if(url.pathname.startsWith('/api/point/')){
        if(user.role!=='admin')D.fail('Solo el administrador configura la impresión Point.',403);
-       const routes={'GET /api/point/terminals':'terminals','POST /api/point/test':'printTest','POST /api/point/check':'check'};
+       const routes={'GET /api/point/terminals':'terminals','POST /api/point/test':'printTest','POST /api/point/check':'check','POST /api/point/mode':'setMode'};
        const method=routes[req.method+' '+url.pathname];if(!method)D.fail('Ruta no encontrada.',404);
        D.limit(d,'point:'+user.id,30);Object.assign(original,d);
        return {point:{method,userId:user.id,sessionHash:session.tokenHash}};
@@ -67,7 +67,7 @@ async function createApp(){
     const {method,userId,sessionHash}=outcome.point;
     const point=Point.createPoint(store,d=>{
      const current=d.users.find(u=>u.id===userId&&u.active&&u.role==='admin');
-     if(!current||!d.sessions.some(s=>s.tokenHash===sessionHash&&s.userId===userId&&s.expires>Date.now()))D.fail('Tu sesión ya no está autorizada.',401);
+     if(!current||!d.sessions.some(s=>s.tokenHash===sessionHash&&s.userId===userId&&s.expires>Date.now()))D.fail('Tu sesión ya no está autorizada.',401);return current;
     });
     return json(await point[method](body));
    }

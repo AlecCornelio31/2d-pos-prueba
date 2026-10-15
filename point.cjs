@@ -1,5 +1,6 @@
 // Phase one: private credentials, read-only discovery, and two fixed test tickets.
-// Never changes operating mode, accounts, or payment data.
+// Mode changes require a separate, explicit administrator confirmation.
+// Never changes accounts or payment data.
 const crypto = require('node:crypto');
 const fail = (message, status = 400) => { throw Object.assign(new Error(message), {status}); };
 const hash = x => crypto.createHash('sha256').update(x).digest('hex');
@@ -11,12 +12,12 @@ const safeBatches = d => (d.pointBatches || []).slice(-20).map(b => ({id:b.id,at
 function createPoint(store, authorize, fetcher = fetch) {
  const token = () => process.env.MP_ACCESS_TOKEN?.trim();
  const fingerprint = () => hash(token() || '');
- async function api(path, body, key) {
+ async function api(path, body, key, method) {
    const secret = token(); if (!secret) fail('Falta MP_ACCESS_TOKEN en la configuración del servidor.');
    let r;
    try { r = await fetcher('https://api.mercadopago.com' + path, {
-     method:body?'POST':'GET',redirect:'error',signal:AbortSignal.timeout(8000),
-     headers:{Authorization:'Bearer '+secret,...(body?{'Content-Type':'application/json','X-Idempotency-Key':key}:{})},
+     method:method||(body?'POST':'GET'),redirect:'error',signal:AbortSignal.timeout(8000),
+     headers:{Authorization:'Bearer '+secret,...(body?{'Content-Type':'application/json'}:{}),...(key?{'X-Idempotency-Key':key}:{})},
      body:body?JSON.stringify(body):undefined
    }); } catch { fail('No se pudo confirmar con Mercado Pago. Revisa el estado antes de repetir.', 502); }
    if (!r.ok) {
@@ -31,7 +32,32 @@ function createPoint(store, authorize, fetcher = fetch) {
    if (!Array.isArray(r.data?.terminals)) fail('No se reconoció el listado de terminales de Mercado Pago.',502);
    return {configured:true,environment:config().environment,terminals:r.data.terminals.filter(t=>validId(t.id)).map(t=>({id:t.id,mode:['PDV','STANDALONE','UNDEFINED'].includes(t.operating_mode)?t.operating_mode:'UNDEFINED'})),hasMore:Number(r.paging?.total)>50};
  }
- async function transaction(fn) { return store.transaction(d=>{authorize(d);return fn(d);}); }
+ async function transaction(fn) { return store.transaction(d=>{const user=authorize(d);return fn(d,user);}); }
+ async function setMode(body) {
+   if(!validId(body.terminalId)||!['PDV','STANDALONE'].includes(body.mode)||!['PDV','STANDALONE'].includes(body.expectedMode)||body.confirm!==true||!/^[0-9a-f-]{36}$/i.test(body.requestId||''))fail('Confirma la terminal y el cambio de modo.');
+   const fp=fingerprint();
+   await transaction((d,user)=>{
+     const prior=d.pointModeChange;
+     if(prior?.status==='pending'&&Date.now()-Date.parse(prior.at)<60000)fail('Ya hay un cambio en curso. Consulta terminales y espera un minuto antes de repetir.',409);
+     if(prior?.id===body.requestId)fail('Este cambio ya fue solicitado. Consulta terminales para comprobar el resultado.',409);
+     d.pointModeChange={id:body.requestId,terminalId:body.terminalId,mode:body.mode,status:'pending',at:new Date().toISOString(),fingerprint:fp,userId:user?.id};
+   });
+   try {
+     const list=await terminals(),t=list.terminals.find(t=>t.id===body.terminalId);
+     if(!t)fail('Esa terminal no pertenece a la cuenta configurada.');
+     if(t.mode!==body.mode){
+       if(t.mode!==body.expectedMode)fail('El modo cambió desde la última consulta. Actualiza antes de continuar.',409);
+       await transaction(()=>{if(fingerprint()!==fp)fail('La credencial cambió. Actualiza la consulta.',409);});
+       const result=await api('/terminals/v1/setup',{terminals:[{id:body.terminalId,operating_mode:body.mode}]},undefined,'PATCH');
+       if(!Array.isArray(result.terminals)||!result.terminals.some(t=>t.id===body.terminalId&&t.operating_mode===body.mode))fail('No se confirmó el cambio. Consulta terminales antes de repetir.',502);
+     }
+     await store.transaction(d=>{if(d.pointModeChange?.id===body.requestId)d.pointModeChange.status='confirmed';d.audit.push({id:crypto.randomUUID(),at:new Date().toISOString(),userId:d.pointModeChange?.userId,user:'Administrador',message:'Point: solicitó modo '+body.mode+'; requiere reiniciar terminal'});});
+     return {mode:body.mode,restartRequired:true};
+   }catch(e){
+     await store.transaction(d=>{if(d.pointModeChange?.id===body.requestId)d.pointModeChange.status='uncertain';});
+     throw e;
+   }
+ }
  async function printTest(body) {
    if (!validId(body.terminalId) || !/^[0-9a-f-]{36}$/i.test(body.requestId||'') || body.confirm !== true) fail('Selecciona una terminal y confirma los dos tickets de prueba.');
    const before=await transaction(d=>(d.pointBatches||[]).find(b=>b.id===body.requestId));
@@ -72,7 +98,7 @@ function createPoint(store, authorize, fetcher = fetch) {
    }
    return transaction(d=>({batches:safeBatches(d)}));
  }
- return {terminals,printTest,check};
+ return {terminals,printTest,check,setMode};
 }
 function testContent(kind) {
  const lines=kind==='kitchen'?['COCINA - PRUEBA','NO PREPARAR / SIN VALOR','Pedido de ejemplo','2 x Hamburguesa de prueba','Extra: queso por pieza','INDICACIONES: sin cebolla']:['CLIENTE - PRUEBA','NO COBRAR / SIN VALOR','Pedido de ejemplo','Total de ejemplo: $100.00','PENDIENTE DE PAGO','SERVICIO A DOMICILIO','9321693968','Gracias por tu compra'];
